@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1099412664108",
+    "project_id": "college-notes-website",
+    "storage_bucket": "college-notes-website.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099412664108:android:9aa47c1ee4242d16354689",
+        "android_client_info": {
+          "package_name": "com.example.college_project_forum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1099412664108-rt27k2fle1tq65vfdo3e72s0lssqq5he.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZbXAF1Fceu6M0OJX4mhW-h6sTaJJ5SAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1099412664108-rt27k2fle1tq65vfdo3e72s0lssqq5he.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
