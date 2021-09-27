@@ -191,6 +191,7 @@ class _homeState extends State<home> {
     } else {
       // print(widget.user!.displayName);
       return Scaffold(
+        // resizeToAvoidBottomInset: false,
         drawer: sidebar(context, widget.user, widget.userdata),
         appBar: AppBar(
           title: Text("appbar"),
@@ -295,6 +296,7 @@ class _homeState extends State<home> {
                     )),
                 Expanded(
                   child: PageView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: [
                       pageone(),

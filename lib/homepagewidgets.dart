@@ -668,8 +668,17 @@ class pagethree extends StatefulWidget {
 }
 
 class _pagethreeState extends State<pagethree> {
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  late Future<QuerySnapshot> _getblogs;
   Future<QuerySnapshot> getblogs() {
+    print("mudittwari");
     return FirebaseFirestore.instance.collection('blogs').get();
+  }
+
+  @override
+  void initState() {
+    _getblogs = getblogs();
+    super.initState();
   }
 
   @override
@@ -1327,7 +1336,7 @@ class _pagethreeState extends State<pagethree> {
       );
     } else {
       return FutureBuilder(
-        future: getblogs(),
+        future: _getblogs,
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
@@ -1339,6 +1348,7 @@ class _pagethreeState extends State<pagethree> {
             );
           else
             return SingleChildScrollView(
+              // clipBehavior: Clip.none,
               child: Column(
                 children: [
                   Center(
@@ -1353,8 +1363,13 @@ class _pagethreeState extends State<pagethree> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
+                      // height: MediaQuery.of(context).size.height,
+                      // color: Colors.red,
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
+                        // physics: AlwaysScrollableScrollPhysics(),
+                        // physics: const BouncingScrollPhysics(
+                        //     parent: AlwaysScrollableScrollPhysics()),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return blogwidget(
