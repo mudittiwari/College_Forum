@@ -1,5 +1,7 @@
 // import 'dart:html';
 
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project_forum/basicwidgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +19,8 @@ class showblog extends StatefulWidget {
 
 class _showblogState extends State<showblog> {
   TextEditingController comment = new TextEditingController();
+  TextEditingController commentreply = new TextEditingController();
+  List<TextEditingController> lst = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,10 +167,13 @@ class _showblogState extends State<showblog> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Comments",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 18.0),
+                            child: Text(
+                              "Comments",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
                           ),
                         ),
                         Padding(
@@ -179,8 +186,14 @@ class _showblogState extends State<showblog> {
                                     .snapshots(),
                                 builder: (context,
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  print(snapshot.data!.docs.first["comments"]);
-                                  if (snapshot.hasData)
+                                  // print(snapshot.data!.docs.first["comments"]);
+                                  if (snapshot.hasData) {
+                                    lst.clear();
+                                    for (int i = 0;
+                                        i <
+                                            snapshot.data!.docs
+                                                .first["comments"].length;
+                                        i++) lst.add(TextEditingController());
                                     return ListView.builder(
                                       physics: NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
@@ -212,12 +225,178 @@ class _showblogState extends State<showblog> {
                                                           .first["comments"]
                                                       [index]["comment"]),
                                                 ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 8.0),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Replies",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 14.0),
+                                                  child: Container(
+                                                    child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          NeverScrollableScrollPhysics(),
+                                                      itemBuilder:
+                                                          (context, i) {
+                                                        return Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          8.0),
+                                                              child: Text(
+                                                                  snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .first["comments"][index]["replies"][i]
+                                                                      ["user"],
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          16)),
+                                                            ),
+                                                            Text(snapshot
+                                                                        .data!
+                                                                        .docs
+                                                                        .first["comments"]
+                                                                    [
+                                                                    index]["replies"]
+                                                                [i]["reply"]),
+                                                          ],
+                                                        );
+                                                      },
+                                                      itemCount: snapshot
+                                                          .data!
+                                                          .docs
+                                                          .first["comments"]
+                                                              [index]["replies"]
+                                                          .length,
+                                                    ),
+                                                  ),
+                                                ),
                                                 TextField(
+                                                  controller: lst[index],
                                                   decoration: InputDecoration(
                                                       hintText: "Reply",
-                                                      suffixIcon:
-                                                          Icon(Icons.send)),
-                                                )
+                                                      suffixIcon: InkWell(
+                                                          onTap: () async {
+                                                            showLoaderDialog(
+                                                                context);
+                                                            var id;
+                                                            List comments = [];
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'blogs')
+                                                                .where('uid',
+                                                                    isEqualTo:
+                                                                        widget.doc[
+                                                                            'uid'])
+                                                                .get()
+                                                                .then((value) {
+                                                              id = value.docs
+                                                                  .first.id;
+                                                              comments = value
+                                                                      .docs
+                                                                      .first[
+                                                                  "comments"];
+                                                            });
+                                                            Map mp = {};
+
+                                                            for (var item
+                                                                in comments) {
+                                                              if (item[
+                                                                      "comment"] ==
+                                                                  snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .first["comments"][index]
+                                                                      [
+                                                                      "comment"]) {
+                                                                mp = item;
+                                                                var username;
+                                                                await FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'users')
+                                                                    .where(
+                                                                        'email',
+                                                                        isEqualTo: FirebaseAuth
+                                                                            .instance
+                                                                            .currentUser!
+                                                                            .email
+                                                                            .toString())
+                                                                    .get()
+                                                                    .then(
+                                                                        (value) {
+                                                                  username = value
+                                                                              .docs
+                                                                              .first[
+                                                                          "fname"] +
+                                                                      " " +
+                                                                      value.docs
+                                                                              .first[
+                                                                          "lname"];
+                                                                });
+                                                                mp["replies"]
+                                                                    .add({
+                                                                  "user":
+                                                                      username,
+                                                                  "reply": lst[
+                                                                          index]
+                                                                      .text
+                                                                      .toString()
+                                                                });
+                                                              }
+                                                            }
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'blogs')
+                                                                .doc(id)
+                                                                .update({
+                                                              'comments':
+                                                                  comments,
+                                                            }).then((value) {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                      msg:
+                                                                          "reply added");
+                                                            });
+                                                          },
+                                                          child: Icon(
+                                                              Icons.send))),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 20,
+                                                      horizontal: 48.0),
+                                                  child: Divider(
+                                                    thickness: 0.2,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -226,7 +405,7 @@ class _showblogState extends State<showblog> {
                                       itemCount: snapshot
                                           .data!.docs.first["comments"].length,
                                     );
-                                  else
+                                  } else
                                     return Icon(Icons.error);
                                 }),
                           ),
