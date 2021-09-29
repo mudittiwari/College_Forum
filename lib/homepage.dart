@@ -1,5 +1,6 @@
 // import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project_forum/question_form.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:college_project_forum/basicwidgets.dart';
 import 'package:college_project_forum/contactus.dart';
@@ -20,6 +21,7 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+  bool toshow = false;
   var userdata;
   Color colorone = Color(0xffC5F1FF);
   Color colortwo = Colors.white;
@@ -32,6 +34,7 @@ class _homeState extends State<home> {
     _pageController.addListener(() {
       if (_pageController.page == 1) {
         setState(() {
+          toshow = false;
           colortwo = Color(0xffC5F1FF);
           colorone = Colors.white;
           colorthree = Colors.white;
@@ -39,6 +42,7 @@ class _homeState extends State<home> {
         });
       } else if (_pageController.page == 0) {
         setState(() {
+          toshow = false;
           colorone = Color(0xffC5F1FF);
           colortwo = Colors.white;
           colorthree = Colors.white;
@@ -46,6 +50,7 @@ class _homeState extends State<home> {
         });
       } else if (_pageController.page == 2) {
         setState(() {
+          toshow = false;
           colorthree = Color(0xffC5F1FF);
           colortwo = Colors.white;
           colorone = Colors.white;
@@ -53,12 +58,14 @@ class _homeState extends State<home> {
         });
       } else {
         setState(() {
+          toshow = true;
           colorfour = Color(0xffC5F1FF);
           colortwo = Colors.white;
           colorthree = Colors.white;
           colorone = Colors.white;
         });
       }
+      print(toshow);
     });
     super.initState();
   }
@@ -310,6 +317,25 @@ class _homeState extends State<home> {
             ),
           ),
         ),
+        floatingActionButton: toshow == true
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => question_form()));
+                },
+                child: Container(
+                  child: Icon(
+                    Icons.question_answer,
+                    color: Colors.white,
+                  ),
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Color(0xff02B1E9)),
+                ),
+              )
+            : Text(""),
       );
     }
   }
