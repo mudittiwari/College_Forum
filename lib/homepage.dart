@@ -176,7 +176,7 @@ class _homeState extends State<home> {
                   child: PageView(
                     controller: _pageController,
                     children: [
-                      pageone(),
+                      pageone(widget.user, widget.userdata),
                       pagetwo(),
                       pagethree(),
                       pagefour(),
@@ -299,7 +299,7 @@ class _homeState extends State<home> {
                     physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: [
-                      pageone(),
+                      pageone(widget.user, widget.userdata),
                       pagetwo(),
                       pagethree(),
                       pagefour(),

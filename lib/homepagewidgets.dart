@@ -2,10 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project_forum/mainwidgets.dart';
+import 'package:college_project_forum/select_year.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class pageone extends StatefulWidget {
-  const pageone({Key? key}) : super(key: key);
+  final User? user;
+  final userdata;
+  const pageone(this.user, this.userdata, {Key? key}) : super(key: key);
 
   @override
   _pageoneState createState() => _pageoneState();
@@ -33,24 +37,34 @@ class _pageoneState extends State<pageone> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    // color: Colors.red,
-                    // width: MediaQuery.of(context).size.width * .3,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/cs.png'),
-                          width: 200,
-                        ),
-                        Center(
-                            // alignment: Alignment.center,
-                            child: Text(
-                          "Computer Science \n and Engineering",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
-                      ],
+                  InkWell(
+                    onTap: () {
+                      print("mudittiwari");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  selectyear(widget.user, widget.userdata)));
+                    },
+                    child: Container(
+                      // color: Colors.red,
+                      // width: MediaQuery.of(context).size.width * .3,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('assets/images/cs.png'),
+                            width: 200,
+                          ),
+                          Center(
+                              // alignment: Alignment.center,
+                              child: Text(
+                            "Computer Science \n and Engineering",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                        ],
+                      ),
                     ),
                   ),
                   Container(
@@ -186,24 +200,34 @@ class _pageoneState extends State<pageone> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    // color: Colors.red,
-                    // width: MediaQuery.of(context).size.width * .3,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/cs.png'),
-                          width: 150,
-                        ),
-                        Center(
-                            // alignment: Alignment.center,
-                            child: Text(
-                          "Computer Science \n and Engineering",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
-                      ],
+                  InkWell(
+                    onTap: () {
+                      // print("mudittiwari");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  selectyear(widget.user, widget.userdata)));
+                    },
+                    child: Container(
+                      // color: Colors.red,
+                      // width: MediaQuery.of(context).size.width * .3,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('assets/images/cs.png'),
+                            width: 150,
+                          ),
+                          Center(
+                              // alignment: Alignment.center,
+                              child: Text(
+                            "Computer Science \n and Engineering",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                        ],
+                      ),
                     ),
                   ),
                   Container(
