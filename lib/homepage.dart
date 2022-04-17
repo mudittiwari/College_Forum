@@ -186,7 +186,7 @@ class _homeState extends State<home> {
                       pageone(widget.user, widget.userdata),
                       pagetwo(),
                       pagethree(),
-                      pagefour(),
+                      pagefour(widget.userdata),
                     ],
                   ),
                 ),
@@ -309,7 +309,7 @@ class _homeState extends State<home> {
                       pageone(widget.user, widget.userdata),
                       pagetwo(),
                       pagethree(),
-                      pagefour(),
+                      pagefour(widget.userdata),
                     ],
                   ),
                 ),
@@ -320,8 +320,11 @@ class _homeState extends State<home> {
         floatingActionButton: toshow == true
             ? InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => question_form()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              question_form(widget.userdata)));
                 },
                 child: Container(
                   child: Icon(

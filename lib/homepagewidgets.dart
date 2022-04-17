@@ -1413,7 +1413,8 @@ class _pagethreeState extends State<pagethree> {
 }
 
 class pagefour extends StatefulWidget {
-  const pagefour({Key? key}) : super(key: key);
+  final user;
+  const pagefour(this.user, {Key? key}) : super(key: key);
 
   @override
   _pagefourState createState() => _pagefourState();
